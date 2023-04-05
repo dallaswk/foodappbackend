@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { db } from '../firebaseDb'
 
 export default {
@@ -25,13 +26,15 @@ export default {
       fechaNacimiento: ''
     }
   },
+  computed: {
+    ...mapState(['uid'])
+  },
   created () {
     this.loadUserData()
   },
   methods: {
     async loadUserData () {
-      const uid = this.$route.params.uid
-      const doc = await db.collection('Usuarios').doc(uid).get()
+      const doc = await db.collection('Usuarios').doc(this.uid).get()
       if (doc.exists) {
         const userData = doc.data()
         this.nombre = userData.nombre
@@ -40,8 +43,7 @@ export default {
       }
     },
     async updateProfile () {
-      const uid = this.$route.params.uid
-      await db.collection('Usuarios').doc(uid).update({
+      await db.collection('Usuarios').doc(this.uid).update({
         nombre: this.nombre,
         apellidos: this.apellidos,
         fechaNacimiento: this.fechaNacimiento

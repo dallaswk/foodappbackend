@@ -1,13 +1,15 @@
 <template>
   <div class="home">
-    <button @click="signInWithGoogle">Iniciar sesión con Google</button>
+    <img alt="Vue logo" src="../assets/logo.png">
+        <button @click="signInWithGoogle">Iniciar sesión con Google</button>
   </div>
 </template>
 
 <script>
+// @ is an alias to /src
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
-import { db } from '../firebaseDb'
+import { db } from '@/firebaseDb'
 
 export default {
   name: 'HomeView',
@@ -16,7 +18,6 @@ export default {
       try {
         const provider = new firebase.auth.GoogleAuthProvider()
         const result = await firebase.auth().signInWithPopup(provider)
-
         const user = result.user
         const userData = {
           uid: user.uid,
@@ -26,7 +27,6 @@ export default {
           email: user.email,
           avatar: user.photoURL
         }
-
         await this.createUserIfNotExists(userData)
       } catch (error) {
         console.log(error)
@@ -44,10 +44,12 @@ export default {
           if (!userRef.exists) {
             await db.collection('Usuarios').doc(userData.uid).set(userData)
             console.log('Usuario creado')
-            this.$router.push({ name: 'ProfileForm', params: { uid: userData.uid } })
+            this.$store.dispatch('actualizarUid', userData.uid)
+            this.$router.push({ name: 'ProfileForm' })
           } else {
             console.log('Usuario ya existe')
-            this.$router.push({ name: 'ProfileForm', params: { uid: userData.uid } })
+            this.$store.dispatch('actualizarUid', userData.uid)
+            this.$router.push({ name: 'DashBoard' })
           }
         } catch (error) {
           console.log(error)
@@ -57,6 +59,5 @@ export default {
       }
     }
   }
-
 }
 </script>

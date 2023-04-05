@@ -1,16 +1,20 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export default createStore({
   state: {
+    uid: null
   },
   getters: {
   },
   mutations: {
+    actualizarUid (state, uid) {
+      state.uid = uid
+    }
   },
   actions: {
+    actualizarUid ({ commit }, uid) {
+      commit('actualizarUid', uid)
+    }
   },
   modules: {
   }
