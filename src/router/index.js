@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ProfileForm from '../views/ProfileForm.vue'
-import DashBoard from '../views/Dashboard.vue'
+import DashBoardView from '../views/DashboardView.vue'
+import RegistrationView from '../views/RegistrationView.vue'
+import SignInView from '../views/SignInView.vue'
+import { getAuth, onAuthStateChanged } from '@firebase/auth'
 
 const routes = [
   {
@@ -10,28 +12,53 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
-    path: '/profile-form/',
-    name: 'ProfileForm',
-    component: ProfileForm
-  },
-  {
     path: '/dashboard',
     name: 'DashBoard',
-    component: DashBoard
+    component: DashBoardView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/register',
+    name: 'Registro',
+    component: RegistrationView
+  },
+  {
+    path: '/sign-in',
+    name: 'Login',
+    component: SignInView
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+      getAuth(),
+      (user) => {
+        removeListener()
+        resolve(user)
+      },
+      reject
+    )
+  })
+}
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (await getCurrentUser()) {
+      next()
+    } else {
+      alert('No dispones de acceso')
+      next('/')
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-        <button @click="signInWithGoogle">Iniciar sesión con Google</button>
+  <div class="home flex flex-col justify-center items-center">
+    <img alt="Foodapp logo" src="../assets/img/brocolli.png">
+    <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">FoodAPP</h1>
   </div>
 </template>
 
