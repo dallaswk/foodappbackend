@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="bg-slate-400 w-full">
     <div class="flex flex-col justify-center items-center">
       <div class="col-md-8">
 
@@ -10,10 +10,6 @@
           <div v-if="!uidExiste.value">
             <h2>Es necesario que realices la encuesta inicial.</h2>
           </div>
-          <div class="card-body">
-    <img alt="Foodapp logo" src="../assets/img/pineapple.png">
-          </div>
-
           </div>
             <div v-else class="alert alert-danger" role="alert">
               No estás loguado

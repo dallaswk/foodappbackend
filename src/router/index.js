@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DashBoardView from '../views/DashboardView.vue'
+import DashboardUsers from '../views/dashboard/DashboardUsers'
 import RegistrationView from '../views/RegistrationView.vue'
 import SignInView from '../views/SignInView.vue'
 import { getAuth, onAuthStateChanged } from '@firebase/auth'
@@ -9,25 +10,44 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    meta: {
+      showSidebarMenu: false
+    }
   },
   {
     path: '/dashboard',
     name: 'DashBoard',
     component: DashBoardView,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      showSidebarMenu: true
+    }
+  },
+  {
+    path: '/dashboard/users',
+    name: 'DashBoard Users',
+    component: DashboardUsers,
+    meta: {
+      requiresAuth: true,
+      showSidebarMenu: true
     }
   },
   {
     path: '/register',
     name: 'Registro',
-    component: RegistrationView
+    component: RegistrationView,
+    meta: {
+      showSidebarMenu: false
+    }
   },
   {
     path: '/sign-in',
     name: 'Login',
-    component: SignInView
+    component: SignInView,
+    meta: {
+      showSidebarMenu: false
+    }
   }
 ]
 

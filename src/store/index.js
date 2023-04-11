@@ -52,7 +52,8 @@ export default createStore({
         context.commit('SET_USER', {
           displayName: user.displayName,
           email: user.email,
-          uid: user.uid
+          uid: user.uid,
+          avatarurl: user.photoURL
 
         })
       } else {

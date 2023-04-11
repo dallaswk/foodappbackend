@@ -1,8 +1,11 @@
 <template>
+  <div>
+      <top-nav-component/>
   <div class="home flex flex-col justify-center items-center">
     <img alt="Foodapp logo" src="../assets/img/brocolli.png">
     <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">FoodAPP</h1>
   </div>
+</div>
 </template>
 
 <script>
@@ -10,8 +13,10 @@
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import { db } from '@/firebaseDb'
+import TopNavComponent from '@/components/TopNav.vue'
 
 export default {
+  components: { TopNavComponent },
   name: 'HomeView',
   methods: {
     async signInWithGoogle () {
