@@ -17,7 +17,9 @@
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.1",
     "vue": "^3.2.13",
+    "vue-filter": "^0.2.5",
     "vue-router": "^4.0.3",
+    "vuejs-paginate": "^2.1.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

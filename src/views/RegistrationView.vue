@@ -10,8 +10,13 @@
 
 <script setup>
 import { ref } from 'vue'
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, auth } from '../firebaseDb'
+import { createUserWithEmailAndPassword, auth, db } from '../firebaseDb'
 import { useRouter } from 'vue-router'
+</script>
+<script>
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
+
 const email = ref('')
 const password = ref('')
 const router = useRouter()
@@ -27,15 +32,54 @@ const register = () => {
       alert(error.message)
     })
 }
-const signInWithGoogle = () => {
-  const provider = new GoogleAuthProvider()
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      console.log(result.user)
-      router.push('/dashboard')
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+
+export default {
+  name: 'RegistrationView',
+  methods: {
+    async signInWithGoogle () {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider()
+        const result = await firebase.auth().signInWithPopup(provider)
+        const user = result.user
+        const userData = {
+          uid: user.uid,
+          nombre: '',
+          apellidos: '',
+          fechaNacimiento: '',
+          email: user.email,
+          avatar: user.photoURL
+        }
+        await this.createUserIfNotExists(userData)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async userCanCreate (email) {
+      const usuariosLicencias = await db.collection('Usuarios_licencias').get()
+      return usuariosLicencias.docs.find(doc => doc.data().email === email)
+    },
+    async createUserIfNotExists (userData) {
+      const canCreate = await this.userCanCreate(userData.email)
+      if (canCreate) {
+        try {
+          const userRef = await db.collection('Usuarios').doc(userData.uid).get()
+          if (!userRef.exists) {
+            await db.collection('Usuarios').doc(userData.uid).set(userData)
+            console.log('Usuario creado')
+            this.$store.dispatch('actualizarUid', userData.uid)
+            this.$router.push({ name: 'DashBoard' })
+          } else {
+            console.log('Usuario ya existe')
+            this.$store.dispatch('actualizarUid', userData.uid)
+            this.$router.push({ name: 'DashBoard' })
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        console.log('No dispones de licencia')
+      }
+    }
+  }
 }
 </script>
