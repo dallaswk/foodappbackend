@@ -9,7 +9,7 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import { initDropdowns } from 'flowbite'
+import { initFlowbite } from 'flowbite'
 import { mapState } from 'vuex'
 
 import sidebarMenu from '@/components/SideBarMenu.vue'
@@ -43,7 +43,7 @@ export default {
   },
   setup () {
     onMounted(() => {
-      initDropdowns()
+      initFlowbite()
     })
   }
 }

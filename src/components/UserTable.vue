@@ -101,7 +101,7 @@
             </td>
             <!-- Agrega las otras celdas aquí -->
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">{{ user.apellidos }} <strong>{{ user.nombre }}</strong></div>
+              <div class="text-sm font-medium text-gray-900">{{ user.apellidos }}, <strong>{{ user.nombre }}</strong></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-500">{{ user.email }}</div>
@@ -134,7 +134,7 @@
         </tbody>
       </table>
       <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Mostrando <span class="font-semibold text-gray-900 dark:text-white">{{offset + 1}}-{{offset + perPage}}</span> de <span class="font-semibold text-gray-900 dark:text-white">{{users.length}}</span></span>
+        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Mostrando <span class="font-semibold text-gray-900 dark:text-white">{{offset + 1}}-{{currentItemIndex + offset}}</span> de <span class="font-semibold text-gray-900 dark:text-white">{{users.length}}</span></span>
         <ul class="inline-flex items-center -space-x-px">
             <li>
                 <span @click="setPage(currentPageIndex-1)" class="block cursor-pointer px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -174,7 +174,6 @@ export default {
       allSelected: false,
       perPage: 10,
       currentPageIndex: 0
-
     }
   },
   methods: {
@@ -205,9 +204,13 @@ export default {
     offset: function () {
       console.log(this.currentPageIndex * this.perPage)
       return this.currentPageIndex * this.perPage
+    },
+    currentItemIndex () {
+      return this.users.slice(this.offset, this.offset + this.perPage).length // asigna el número de elementos
     }
   },
   watch: {
+
   }
 }
 </script>
