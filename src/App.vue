@@ -3,6 +3,7 @@
     <main>
     <sidebarMenu v-if="showSidebarMenu" :userdata="user.data"/>
     <router-view />
+    <BaseButton></BaseButton>
     </main>
   </div>
 </template>
@@ -11,12 +12,13 @@
 import { onMounted, ref } from 'vue'
 import { initFlowbite } from 'flowbite'
 import { mapState } from 'vuex'
-
+import BaseButton from '@/components/BaseButton.vue'
 import sidebarMenu from '@/components/SideBarMenu.vue'
 
 export default {
   components: {
-    sidebarMenu
+    sidebarMenu,
+    BaseButton
   },
   data () {
     return {
